@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Lun 18 Septembre 2023 à 17:34
+-- Généré le :  Lun 18 Septembre 2023 à 18:01
 -- Version du serveur :  5.7.11
 -- Version de PHP :  5.6.18
 
@@ -91,12 +91,12 @@ CREATE TABLE `evenement` (
   `date` date NOT NULL,
   `lieu` varchar(50) COLLATE utf16_bin NOT NULL,
   `etat` varchar(50) COLLATE utf16_bin NOT NULL,
-  `Good` int(11) NOT NULL,
-  `Ok` int(11) NOT NULL,
-  `Bad` int(11) NOT NULL,
-  `GoodAdmin` int(11) NOT NULL,
-  `OkAdmin` int(11) NOT NULL,
-  `BadAdmin` int(11) NOT NULL,
+  `Good` int(11) NOT NULL DEFAULT '0',
+  `Ok` int(11) NOT NULL DEFAULT '0',
+  `Bad` int(11) NOT NULL DEFAULT '0',
+  `GoodAdmin` int(11) NOT NULL DEFAULT '0',
+  `OkAdmin` int(11) NOT NULL DEFAULT '0',
+  `BadAdmin` int(11) NOT NULL DEFAULT '0',
   `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_bin;
 
@@ -114,6 +114,7 @@ INSERT INTO `evenement` (`id`, `nom`, `description`, `date`, `lieu`, `etat`, `Go
 --
 
 CREATE TABLE `evenement_dept` (
+  `id` int(11) NOT NULL,
   `id_Evenement` int(11) NOT NULL,
   `id_Departement` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_bin;
@@ -122,9 +123,9 @@ CREATE TABLE `evenement_dept` (
 -- Contenu de la table `evenement_dept`
 --
 
-INSERT INTO `evenement_dept` (`id_Evenement`, `id_Departement`) VALUES
-(1, 29),
-(1, 33);
+INSERT INTO `evenement_dept` (`id`, `id_Evenement`, `id_Departement`) VALUES
+(1, 1, 29),
+(2, 1, 33);
 
 -- --------------------------------------------------------
 
@@ -170,8 +171,9 @@ ALTER TABLE `evenement`
 -- Index pour la table `evenement_dept`
 --
 ALTER TABLE `evenement_dept`
-  ADD PRIMARY KEY (`id_Evenement`,`id_Departement`),
-  ADD KEY `fk_id_departement` (`id_Departement`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_id_departement` (`id_Departement`),
+  ADD KEY `fk_id_evenement` (`id_Evenement`);
 
 --
 -- Index pour la table `user`
@@ -195,6 +197,11 @@ ALTER TABLE `departement`
 --
 ALTER TABLE `evenement`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT pour la table `evenement_dept`
+--
+ALTER TABLE `evenement_dept`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `user`
 --
