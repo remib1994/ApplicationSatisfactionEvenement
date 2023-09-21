@@ -12,3 +12,23 @@ td{
     width: 180px;
    
 }
+
+
+/* page Vote etudiant*/
+.titreEvenCour{
+  text-align: center;
+  font-size: 65px;
+}
+.bodyEtu{
+  margin: 44px;
+  padding: 5px;
+  background: rgb(0,194,255);
+}
+.vote{
+  margin-top: 128px;
+}
+.imgVoteE, .imgVoteP{
+  width: 3500px;
+  height: 350px;
+  margin: 10px;
+}
