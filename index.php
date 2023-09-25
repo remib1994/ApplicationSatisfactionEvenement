@@ -18,8 +18,8 @@ session_start();
 
     //Variable de connexion BD
     $servername = "localhost";
-    $username = "root";
-    $password = "root";
+    $DBusername = "root";
+    $DBpassword = "root";
     $db = "appsatisfaction";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -28,7 +28,7 @@ session_start();
         $password = sha1($password,false);
 
         //create connection
-        $conn = new mysqli($servername,$username,$password,$dbname);
+        $conn = new mysqli($servername,$DBusername,$DBpassword,$db);
         // Check connection
         if ($conn->connect_error){
             die("Connection failed: " . $conn->connect_error);
@@ -40,53 +40,83 @@ session_start();
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $_SESSION["connexion"] = true;
-            $_SESSION["type"] = $row["type"];
-            $_SESSION["matricule"] = $row["matricule"];
+            $_SESSION["email"] = $row["email"];
+            $_SESSION["username"] = $row["username"];
         }
     }
         ?>  
+        
 
     <?php
-    if(!isset($_SESSION["connexion"]) or $_SESSION["connexion"] != true){ ?>
-        <nav class="row navbar navbar-expand-sm navbar-dark bg-dark">
+    if(!isset($_SESSION["connexion"]) or $_SESSION["connexion"] != true){ ?>   
+        <nav class="row navbar navbar-expand-sm navbar-dark bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.php"><i class="bi bi-book"></i>SatisfactoPoll</a>
+                <a class="navbar-brand" href="index.php">
+                    <i class="bi bi-speedometer"></i>SatisfactoPoll
+                </a>        
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-                    <span class="navbar-toggler-icon"></span>
+                        <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item" >
                         <a class="nav-link" href="index.php">Connexion</a>
                     </li>
-                    <li class="nav-item" >
-                        <a class="nav-link" href="index.php"></i>Afficher</a>
-                    </li>
                 </ul>                  
-                <form class="d-flex">
-                    <input class="form-control me-2" type="text" placeholder="Search">
-                    <button class="btn btn-primary" type="button">Search</button>
-                </form>
                 </div>
             </div>
         </nav>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <h1>Connexion</h1>
+                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Adresse email</label>
+                            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
+                            <div id="emailHelp" class="form-text">Nous ne partagerons jamais votre email avec qui que ce soit.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Se connecter</button>
+                    </form>
+                </div>
+            </div>
     <?php
-    }else{
-        //create connection
-        $conn = new mysqli($servername,$username,$password,$dbname);
-        // Check connection
-        if ($conn->connect_error){
-            die("Connection failed: " . $conn->connect_error);
-        }
-
-        $sql = "SELECT * from ";
-        $result = $conn->query($sql);
-
-    }
-
-        ?>
-
+    }else{ ?>
+        <nav class="row navbar navbar-expand-sm navbar-dark bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.php">
+                    <i class="bi bi-speedometer"></i>SatisfactoPoll
+                </a>        
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                        <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item" >
+                        <a class="nav-link" href="deconnecter.php">Déconnexion</a>
+                    </li>
+                </ul>                  
+                </div>
+                <div> 
+                    <span class="navbar-text">
+                        <?php echo "Bienvenue ".$_SESSION["username"]; ?>
+                    </span>
+                </div>
+                 
+            </div>
+                    
+        </nav>
         
+        
+    <?php
+    } ?>
+        
+<?php
 
 
 $nomEvent = "";
@@ -98,18 +128,17 @@ $dateEventErr = "";
 $lieuEvent = "";
 $lieuEventErr = "";
 $erreur = false;
-$_SESSION["connexion"] = true;
 
 
 
 if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
     $servername = "localhost";
-    $username = "root";
-    $password = "root";
+    $DBusername = "root";
+    $DBpassword = "root";
     $db = "appsatisfaction";
 
     // Create connection  
-    $conn = new mysqli($servername, $username, $password, $db);
+    $conn = new mysqli($servername, $DBusername, $DBpassword, $db);
     // Check connection
     if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -121,7 +150,7 @@ if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
 
 ?>
 
-<!-- affichage des ellement -->
+<!-- affichage des elements -->
 <div class="container-fluid">
 <div class="row col-12">
 <table class="table table-striped" >
@@ -135,29 +164,7 @@ if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
 
   </tr>
 
-<?php
-if($result->num_rows > 0 ){
-    while($row = $result->fetch_assoc()){
-?>
-<tr>
-            <td class="tdList"><?php echo $row["id"] ?></td>
-            <td class="tdList"><?php echo $row["nom"] ?></td>
-            <td class="tdList"><?php echo $row["description"]?></td>
-            <td class="tdList"><?php echo $row["date"] ?></td>
-            <td class="tdList"><?php echo $row["lieu"] ?></td>
-            <td class="tdList"><?php echo $row["etat"] ?></td>
-            <td class="tdlist"><a href="modifier.php?id=<?php echo $row["id"] ?>">🛠️</a></td>
-            <td class="tdlist"><a href="supprimer.php?id=<?php echo $row["id"] ?>">❌</a></td>
-        </tr>
-       
-        <?php
-    }
-}
-    else{
-        echo "0 resultats";
-    }
-    
-    ?>
+
     <!-- fin affichage des ellement -->
 
 </table>
