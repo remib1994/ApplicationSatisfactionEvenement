@@ -9,6 +9,8 @@ session_start();
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <script src="js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="style.css" /> 
     
     <title>Gestionnaire évènement</title>
@@ -52,7 +54,7 @@ session_start();
         <nav class="row navbar navbar-expand-sm navbar-dark bg-primary">
             <div class="container-fluid">
                 <a class="navbar-brand" href="index.php">
-                    <i class="bi bi-speedometer"></i>SatisfactoPoll
+                    <i class="bi bi-speedometer mx-2"></i>SatisfactoPoll
                 </a>        
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                         <span class="navbar-toggler-icon"></span>
@@ -89,23 +91,47 @@ session_start();
     }else{ ?>
         <nav class="row navbar navbar-expand-sm navbar-dark bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.php">
+                <a class="navbar-brand mx-2" href="index.php">
                     <i class="bi bi-speedometer"></i>SatisfactoPoll
                 </a>        
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
                         <span class="navbar-toggler-icon"></span>
                 </button>
+                
                 <div class="collapse navbar-collapse" id="mynavbar">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item" >
-                        <a class="nav-link" href="deconnecter.php">Déconnexion</a>
+                        <a class="nav-link" href="index.php">Accueil</a>
                     </li>
-                </ul>                  
+                    <li class="nav-item" >
+                        <a class="nav-link" href="creerEvenement.php">Créer un évènement</a>
+                    </li>
+                    <li>
+                        <div class="dropdown">
+                            <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Utilisateur
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Créer</a></li>
+                                <li><a class="dropdown-item" href="#">Afficher</a></li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item" >
+                        <a class="nav-link" href="creeruser.php">Créer un utilisateur</a>
+                    </li>
+
+                </ul>      
+                            
                 </div>
                 <div> 
-                    <span class="navbar-text">
+                <span class="mx-2 navbar-text">
                         <?php echo "Bienvenue ".$_SESSION["username"]; ?>
                     </span>
+                    
+                    <a href="deconnecter.php" class="mx-2 link-warning">Se déconnecter <i class="bi bi-box-arrow-right"></i></a>
+                    
                 </div>
                  
             </div>
