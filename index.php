@@ -9,8 +9,7 @@ session_start();
     <link rel="stylesheet" type="text/css" href="style.css" /> 
    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="script.js"></script>
+  
     <title>Document</title>
 </head>
 <body>
@@ -218,6 +217,7 @@ WHERE id_Evenement =' . $row3["id"] . ')';
             <td class="tdList" ><?php echo $row3["etat"] ?></td>
             <td class="tdlist"><a href="modifier.php?id=<?php echo $row3["id"] ?>">🛠️</a></td>
             <td class="tdlist"><a href="supprimer.php?id=<?php echo $row3["id"] ?>">❌</a></td>
+            <td class="tdlist"><a href="evenementEnCoursEtu.php?id=<?php echo $row["id"]?>" >commencer</a></td>
         </tr>
         
         <?php
@@ -233,24 +233,13 @@ WHERE id_Evenement =' . $row3["id"] . ')';
    
 
 
-<a href="creerEvenement.php">Créer un événement</a>
+<a class="creeEvents" href="creerEvenement.php">Créer un événement</a>
 </div>
 
 <script>
-var acc = document.getElementsByClassName("accordion");
-var i;
 
-for (i = 0; i < acc.length; i++) {
-  acc[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var panel = this.nextElementSibling;
-    if (panel.style.display === "block") {
-      panel.style.display = "none";
-    } else {
-      panel.style.display = "block";
-    }
-  });
-}
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
