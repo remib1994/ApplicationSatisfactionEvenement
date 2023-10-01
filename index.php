@@ -30,10 +30,10 @@ $_SESSION["connexion"] = true;
 
 
 if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
-    $servername = "localhost";
-    $username = "root";
-    $password = "root";
-    $db = "appsatisfaction";
+    $servername = "cours.cegep3r.info";
+    $username = "1238823";
+    $password = "1238823";
+    $db = "1238823-remi-berneche";
 
     // Create connection  
     $conn = new mysqli($servername, $username, $password, $db);
