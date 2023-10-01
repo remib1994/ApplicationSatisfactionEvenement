@@ -349,3 +349,5 @@ healthchecksdb
 MigrationBackup/
 
 connexion.php
+
+.idea/

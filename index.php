@@ -19,10 +19,10 @@ session_start();
     <?php
 
     //Variable de connexion BD
-    $servername = "localhost";
-    $DBusername = "root";
-    $DBpassword = "root";
-    $db = "appsatisfaction";
+    $servername = "cours.cegep3r.info";
+    $username = "1238823";
+    $password = "1238823";
+    $db = "1238823-remi-berneche";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST['email'];
