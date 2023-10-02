@@ -8,11 +8,10 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <script src="js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="style.css" /> 
-    
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
     <title>Gestionnaire évènement</title>
 </head>
 <body>    
@@ -20,8 +19,8 @@ session_start();
 
     //Variable de connexion BD
     $servername = "cours.cegep3r.info";
-    $username = "1238823";
-    $password = "1238823";
+    $DBusername = "1238823";
+    $DBpassword = "1238823";
     $db = "1238823-remi-berneche";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -50,28 +49,25 @@ session_start();
         
 
     <?php
-    if(!isset($_SESSION["connexion"]) or $_SESSION["connexion"] != true){ ?>   
-        <nav class="row navbar navbar-expand-sm navbar-dark bg-primary">
+    if(!isset($_SESSION["connexion"]) or $_SESSION["connexion"] != true){ ?>
+        <nav class="navbar navbar-dark navbar-expand-lg bg-primary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.php">
-                    <i class="bi bi-speedometer mx-2"></i>SatisfactoPoll
-                </a>        
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-                        <span class="navbar-toggler-icon"></span>
+                <a class="navbar-brand mx-2" href="index.php">
+                    <i class="bi bi-speedometer"></i>SatisfactoPoll
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="mynavbar">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item" >
-                        <a class="nav-link" href="index.php">Connexion</a>
-                    </li>
-                </ul>                  
+                <div class="collapse navbar-collapse justify-content-end" id="navbarScroll">
+
+                    <a class="btn btn-outline-warning btn-primary" href="index.php" role="button">Se connecter <i class="bi bi-box-arrow-left"></i></a>
                 </div>
             </div>
         </nav>
 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-sm-3">
                     <h1>Connexion</h1>
                     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                         <div class="mb-3">
@@ -87,55 +83,56 @@ session_start();
                     </form>
                 </div>
             </div>
+        </div>
     <?php
     }else{ ?>
-        <nav class="row navbar navbar-expand-sm navbar-dark bg-primary">
+
+        <nav class="navbar navbar-dark navbar-expand-lg bg-primary">
             <div class="container-fluid">
                 <a class="navbar-brand mx-2" href="index.php">
                     <i class="bi bi-speedometer"></i>SatisfactoPoll
-                </a>        
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-                        <span class="navbar-toggler-icon"></span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-                
-                <div class="collapse navbar-collapse" id="mynavbar">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item" >
-                        <a class="nav-link" href="index.php">Accueil</a>
-                    </li>
-                    <li class="nav-item" >
-                        <a class="nav-link" href="creerEvenement.php">Créer un évènement</a>
-                    </li>
-                    <li>
-                        <div class="dropdown">
-                            <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="collapse navbar-collapse" id="navbarScroll">
+                    <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Évènement
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Créer</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">Afficher</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Département
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="departementCreer.php">Créer</a></li>
+                                <li><a class="dropdown-item" href="departementAfficher.php">Afficher</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Utilisateur
-                            </button>
+                            </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#">Créer</a></li>
                                 <li><a class="dropdown-item" href="#">Afficher</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item" >
-                        <a class="nav-link" href="creeruser.php">Créer un utilisateur</a>
-                    </li>
-
-                </ul>      
-                            
-                </div>
-                <div> 
-                <span class="mx-2 navbar-text">
+                        </li>
+                    </ul>
+                        <span class="mx-2 navbar-text">
                         <?php echo "Bienvenue ".$_SESSION["username"]; ?>
-                    </span>
-                    
-                    <a href="deconnecter.php" class="mx-2 link-warning">Se déconnecter <i class="bi bi-box-arrow-right"></i></a>
-                    
+                        </span>
+                        <a href="deconnecter.php" class="mx-2 link-warning">Se déconnecter <i class="bi bi-box-arrow-right"></i></a>
                 </div>
-                 
+
             </div>
-                    
         </nav>
         
         
@@ -158,10 +155,6 @@ $erreur = false;
 
 
 if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
-    $servername = "localhost";
-    $DBusername = "root";
-    $DBpassword = "root";
-    $db = "appsatisfaction";
 
     // Create connection  
     $conn = new mysqli($servername, $DBusername, $DBpassword, $db);
