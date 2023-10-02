@@ -43,6 +43,7 @@ session_start();
             $_SESSION["connexion"] = true;
             $_SESSION["email"] = $row["email"];
             $_SESSION["username"] = $row["username"];
+            $_SESSION["id"] = $row["id"];
         }
     }
         ?>  

@@ -22,17 +22,14 @@ session_start();
     $DBpassword = "1238823";
     $db = "1238823-remi-berneche";
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $password = sha1($password,false);
-
     //create connection
     $conn = new mysqli($servername,$DBusername,$DBpassword,$db);
+    $conn->set_charset("utf8");
     // Check connection
     if ($conn->connect_error){
         die("Connection failed: " . $conn->connect_error);
     }
+
 
 
 
@@ -90,8 +87,8 @@ session_start();
                                 Département
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Créer</a></li>
-                                <li><a class="dropdown-item" href="#">Afficher</a></li>
+                            <li><a class="dropdown-item" href="departementCreer.php">Créer</a></li>
+                                <li><a class="dropdown-item" href="departementAfficher.php">Afficher</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -113,10 +110,9 @@ session_start();
             </div>
         </nav>
 
-        //show departement in a table
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-sm-3">
+                <div class="col-sm-6">
                     <h1>Afficher les départements</h1>
                     <table class="table table-striped table-hover tab">
                         <thead>
@@ -130,8 +126,17 @@ session_start();
                             $sql = "SELECT * FROM departement";
                             $result = $conn->query($sql);
                             if($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    echo "<tr><td>" . $row["code"] . "</td><td>" . $row["nom"] . "</td></tr>";
+                                while ($row = $result->fetch_assoc()) { ?>
+
+                                    <tr>
+                                        <td class="col bg-primary"><?php echo $row["code"]; ?></td>
+                                        <td class="col-10"><?php echo $row["nom"]; ?><td class='col-1'> </td>
+                                        <td>
+                                            <a class='btn btn-outline-dark btn-primary' href='modifierDepartement.php?id=<?php echo $row['id']?>' role='button'><i class='bi bi-pencil-square'></i></a>
+                                            <a class='btn btn-outline-dark btn-primary' href='supprimerDepartement.php?id=<?php echo $row['id']?>' role='button'><i class='bi bi-trash'></i></a>
+                                        </td>
+                                    </tr>
+                                    <?php
                                 }
                             }
                             ?>
@@ -139,7 +144,9 @@ session_start();
                     </table>
                 </div>
             </div>
+        </div>
+
     <?php
-        }}?>
+        }?>
 </body>
 </html>

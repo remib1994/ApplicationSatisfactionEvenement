@@ -18,9 +18,6 @@ session_start();
     <?php
 
     $nom = $code = $codeError= $nomError = "";
-
-
-
     if(!isset($_SESSION["connexion"]) or $_SESSION["connexion"] != true){ ?>
     <nav class="navbar navbar-dark navbar-expand-lg bg-primary">
         <div class="container-fluid">
@@ -69,16 +66,22 @@ session_start();
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            $sql = "SELECT * FROM departement where code='$code'";
-            $result = $conn->query($sql);
-
-            if ($result->num_rows > 0) {
-                $codeError = "Ce code est déjà utilisé";
+            /*Test for forms */
+            if(empty($code)){
+                $codeError = "Le code est requis";
             }else{
-                $sql = "INSERT INTO departement (code, nom) VALUES ('$code', '$nom')";
+                $sql = "SELECT * FROM departement where code='$code'";
                 $result = $conn->query($sql);
-                header("Location: departementAfficher.php");
+                if ($result->num_rows > 0) {
+                    $codeError = "Le code existe déjà";
+                }
             }
+            if(empty($nom)){
+                $nomError = "Le nom est requis";
+            }
+
+
+
         }
 
         ?>
@@ -109,8 +112,8 @@ session_start();
                                 Département
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Créer</a></li>
-                                <li><a class="dropdown-item" href="#">Afficher</a></li>
+                                <li><a class="dropdown-item" href="departementCreer.php">Créer</a></li>
+                                <li><a class="dropdown-item" href="departementAfficher.php">Afficher</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -132,7 +135,6 @@ session_start();
             </div>
         </nav>
 
-        //Form for a code and a name of departement
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-sm-3">
@@ -144,8 +146,9 @@ session_start();
                             <label for="code" class="form-label text-danger" id="codeError"><?php echo $codeError?></label>
                         </div>
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nom du département</label>
-                            <input type="text" class="form-control" id="name" name="name">
+                            <label for="nom" class="form-label">Nom du département</label>
+                            <input type="text" class="form-control" id="nom" name="nom">
+                            <label for="nom" class="form-label text-danger" id="nomError"><?php echo $nomError?></label>
                         </div>
                         <button type="submit" class="btn btn-primary">Créer</button>
                     </form>
@@ -153,8 +156,7 @@ session_start();
             </div>
         </div>
         <?php
-    }
-} ?>
+    } ?>
 
 
 
