@@ -132,8 +132,8 @@ session_start();
                                         <td class="col bg-primary"><?php echo $row["code"]; ?></td>
                                         <td class="col-10"><?php echo $row["nom"]; ?><td class='col-1'> </td>
                                         <td>
-                                            <a class='btn btn-outline-dark btn-primary' href='modifierDepartement.php?id=<?php echo $row['id']?>' role='button'><i class='bi bi-pencil-square'></i></a>
-                                            <a class='btn btn-outline-dark btn-primary' href='supprimerDepartement.php?id=<?php echo $row['id']?>' role='button'><i class='bi bi-trash'></i></a>
+                                            <a class='btn btn-outline-dark btn-primary' href='departementModifier.php?id=<?php echo $row['id']?>' role='button'><i class='bi bi-pencil-square'></i></a>
+                                            <a class='btn btn-outline-dark btn-primary' href='departementSupprimer.php?id=<?php echo $row['id']?>' role='button'><i class='bi bi-trash'></i></a>
                                         </td>
                                     </tr>
                                     <?php
