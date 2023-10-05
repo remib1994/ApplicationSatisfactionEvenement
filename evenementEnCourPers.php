@@ -19,14 +19,15 @@ $_SESSION["connexion"] = true;
 
 
 if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
-    $servername = "localhost";
-    $username = "root";
-    $password = "root";
-    $db = "appsatisfaction";
-    
+    //Variable de connexion BD
+    $servername = "cours.cegep3r.info";
+    $DBusername = "1238823";
+    $DBpassword = "1238823";
+    $db = "1238823-remi-berneche";
+
 
     // Create connection  
-    $conn = new mysqli($servername, $username, $password, $db);
+    $conn = new mysqli($servername, $DBusername, $DBpassword, $db);
     // Check connection
     if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);

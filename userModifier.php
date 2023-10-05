@@ -225,7 +225,7 @@ if(!isset($_SESSION["connexion"]) or $_SESSION["connexion"] != true){ ?>
                 <div class="col-sm-3">
                     <?php
                     if($_SESSION['admin'] == 1){ ?>
-                        <h1>Créer un usagé</h1>
+                        <h1>Modifier un usagé</h1>
                         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                             <div class="mb-3">
                                 <input type="hidden" name="id" value="<?php echo $id ?>">

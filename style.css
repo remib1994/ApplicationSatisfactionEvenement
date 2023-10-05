@@ -1,22 +1,17 @@
 table {
     
-  width: 100%;
-  background-color:cyan;
 }
 
 th{
   size: 20px;
-  background-color:cyan;
 }
 td{
   padding: 30px; 
   font-size: 13px;
   width: 180px;
-  background-color:cyan;
- 
+
 }
 tr{
-  background-color:cyan;
   color: white;
 }
 
