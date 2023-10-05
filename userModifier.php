@@ -17,7 +17,8 @@ session_start();
 <body>
 <?php
 
-$nom = $code = $codeError= $nomError = "";
+$username = $email= $password = $admin= $passwordError = $usernameError= $userEmailError = "";
+
 if(!isset($_SESSION["connexion"]) or $_SESSION["connexion"] != true){ ?>
 <nav class="navbar navbar-dark navbar-expand-lg bg-primary">
     <div class="container-fluid">
@@ -60,25 +61,37 @@ if(!isset($_SESSION["connexion"]) or $_SESSION["connexion"] != true){ ?>
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $valide = true;
             $id = $_POST['id'];
-            $code = $_POST['code'];
-            $nom = $_POST['nom'];
+            $username = $_POST['username'];
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+            $password = SHA1($password);
+            $admin = 0;
 
-            /*Test for forms */
-            if(empty($code)){
-                $codeError = "Le code est requis";
+
+            if(isset($_POST['admin'])){
+                $admin = $_POST['admin'];
+            }else{
+                $admin= 0;
+            }
+            if(empty($username)){
+                $usernameError = "Le nom d'usagé est requis.";
                 $valide = false;
             }
-            if(empty($nom)){
-                $nomError = "Le nom est requis";
+            if(empty($email)){
+                $userEmailError = "Une adresse courriel est requise.";
                 $valide = false;
+            }
+            if(empty($password)){
+                $password = "utilisateur";
+                $password = SHA1($password);
             }
 
             if($valide){
-                $id = $_POST['id'];
-                $sql = "UPDATE departement SET code='$code', nom='$nom' WHERE id='$id'";
+                $sql = "UPDATE user SET username='$username' , email='$email', password='$password', admin='$admin' WHERE id='$id'";
                 if ($conn->query($sql) === TRUE) {
-                    echo "New record created successfully";
-                    header("Location: departementAfficher.php");
+                    echo "Le compte a été modifié avec succès";
+                    header("Location: userAfficher.php");
+
                 } else {
                     echo "Error: " . $sql . "<br>" . $conn->error;
                 }
@@ -95,16 +108,19 @@ if(!isset($_SESSION["connexion"]) or $_SESSION["connexion"] != true){ ?>
             if ($conn->connect_error){
                 die("Connection failed: " . $conn->connect_error);
             }
-            $conn->set_charset("utf8");
 
-            $sql = "SELECT * FROM departement where id='$id'";
+            $sql = "SELECT * FROM user where id='$id'";
             $result = $conn->query($sql);
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
 
-                $code = $row['code'];
-                $nom = $row['nom'];
+                $username = $row['username'];
+                $email = $row['email'];
+                $admin = $row['admin'];
+                $id = $row['id'];
             }
+            if($admin == 1){
+                $admin = "checked";
         }
 
     if(!isset($_SESSION["connexion"]) or $_SESSION["connexion"] != true){ ?>
@@ -208,35 +224,49 @@ if(!isset($_SESSION["connexion"]) or $_SESSION["connexion"] != true){ ?>
             <div class="row justify-content-center">
                 <div class="col-sm-3">
                     <?php
-                    if($_SESSION["admin"] == 1) { ?>
-                        <h1>Modifier un département</h1>
+                    if($_SESSION['admin'] == 1){ ?>
+                        <h1>Créer un usagé</h1>
                         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-                            <input type="hidden" name="id" value="<?php echo $id ?>">
                             <div class="mb-3">
-                                <label for="code" class="form-label">Code du département</label>
-                                <input type="text" class="form-control" id="code" name="code" aria-describedby="codeHelp" value="<?php echo $code ?>">
-                                <label for="code" class="form-label text-danger" id="codeError"><?php echo $codeError?></label>
+                                <input type="hidden" name="id" value="<?php echo $id ?>">
+                                <label for="username" class="form-label">Nom usagé</label>
+                                <input type="text" class="form-control" id="username" name="username" value="<?php echo $username ?>" aria-describedby="codeHelp">
+                                <label for="username" class="form-label text-danger" id="codeError"><?php echo $usernameError?></label><br>
+                                <label for="email" class="form-label">Email</label>
+                                <input type="text" class="form-control" id="email" name="email" value="<?php echo $email ?>">
+                                <label for="email" class="form-label text-danger"><?php echo $userEmailError ?></label><br>
+                                <label for="password" class="form-label">Mot de passe</label>
+                                <input type="text" class="form-control" id="password" name="password">
+                                <label for="password" class="form-label text-danger"><?php echo $passwordError ?></label><br>
+                                <?php
+                                if( $_SESSION['admin'] ==1) { ?>
+                                <input type="checkbox" id="admin" name="admin" value="1" <?php echo $admin ?>>
+                                <label for="admin" class="form-label">Compte administrateur</label>
+                                <?php
+                                } ?>
                             </div>
                             <div class="mb-3">
-                                <label for="nom" class="form-label">Nom du département</label>
-                                <input type="text" class="form-control" id="nom" name="nom" value="<?php echo $nom ?>">
-                                <label for="nom" class="form-label text-danger" id="nomError"><?php echo $nomError?></label>
+
+                                <p>Veuillez notez que le mot de passe par défaut est : utilisateur.<br>
+                                    L'utilisateur peut le changer une fois connecté.</p>
+
+
                             </div>
-                            <button type="submit" class="btn btn-primary">Modifier</button>
+                            <button type="submit" class="btn btn-primary">Créer</button>
                         </form>
-                    <?php
+                        <?php
                     }else{
                         echo "<h1>Vous devez être administrateur pour voir cette page.</h1>";
+                    }
                     ?>
 
                 </div>
             </div>
         </div>
         <?php
-                    }
-    }
- $conn->close();
-?>
+
+                }
+    } ?>
 
 
 

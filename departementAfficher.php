@@ -29,9 +29,7 @@ session_start();
     if ($conn->connect_error){
         die("Connection failed: " . $conn->connect_error);
     }
-
-
-
+    $conn->set_charset("utf8");
 
 
     if(!isset($_SESSION["connexion"]) or $_SESSION["connexion"] != true){ ?>
@@ -52,63 +50,84 @@ session_start();
 
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-sm-3 text-center align-content-center my-5">
-                    <h1>Vous devez être connecté pour voir cette page</h1>
-                    <button type="button" class="btn btn-primary" onclick="window.location.href='index.php'">Se connecter</button>
+            <div class="col-sm-3">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-sm-3 text-center align-content-center my-5">
+                            <h1>Vous devez être connecté pour voir cette page</h1>
+                            <button type="button" class="btn btn-primary" onclick="window.location.href='index.php'">Se connecter</button>
+                        </div>
+                    </div>
+            </div>
         </div>
     </div>
-
     <?php
     }else{ ?>
 
-        <nav class="navbar navbar-dark navbar-expand-lg bg-primary">
-            <div class="container-fluid">
-                <a class="navbar-brand mx-2" href="index.php">
-                    <i class="bi bi-speedometer"></i>SatisfactoPoll
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarScroll">
-                    <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Évènement
+    <nav class="navbar navbar-dark navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand mx-2" href="index.php">
+                <i class="bi bi-speedometer"></i>SatisfactoPoll
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Évènement
+                        </a>
+                        <ul class="dropdown-menu">
+                            <?php
+                            if($_SESSION["admin"] == 1){
+                                echo "<li><a class='dropdown-item' href='creerEvenement.php'>Créer</a></li>";
+                                echo "<li><hr class='dropdown-divider'></li>";
+                            }
+                            ?>
+                            <li><a class="dropdown-item" href="index.php">Afficher</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Département
+                        </a>
+                        <ul class="dropdown-menu">
+                            <?php
+                            if($_SESSION["admin"] == 1){
+                                echo "<li><a class='dropdown-item' href='departementCreer.php'>Créer</a></li>";
+                                echo "<li><hr class='dropdown-divider'></li>";
+                            }
+                            ?>
+                            <li><a class="dropdown-item" href="departementAfficher.php">Afficher</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Utilisateur
+                        </a>
+                        <ul class="dropdown-menu">
+                            <?php
+                            if($_SESSION["admin"] == 1){
+                                echo "<li><a class='dropdown-item' href='userCreer.php'>Créer</a></li>";
+                                echo "<li><hr class='dropdown-divider'></li>";
+                            }
+                            ?>
+                            <li><a class="dropdown-item" href="userAfficher.php">Afficher</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <span class="mx-2 navbar-text">
+                            Bienvenue <a class='text-warning' href='userModifier.php?id=<?php echo $_SESSION['id']; ?>'><?php echo $_SESSION["username"]; ?>
                             </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Créer</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Afficher</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Département
-                            </a>
-                            <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="departementCreer.php">Créer</a></li>
-                                <li><a class="dropdown-item" href="departementAfficher.php">Afficher</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Utilisateur
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Créer</a></li>
-                                <li><a class="dropdown-item" href="#">Afficher</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <span class="mx-2 navbar-text">
-                                <?php echo "Bienvenue ".$_SESSION["username"]; ?>
-                                </span>
-                    <a href="deconnecter.php" class="mx-2 link-warning">Se déconnecter <i class="bi bi-box-arrow-right"></i></a>
-                </div>
-
+                        </span>
+                <a href="deconnecter.php" class="mx-2 link-warning">Se déconnecter <i class="bi bi-box-arrow-right"></i></a>
             </div>
-        </nav>
+
+        </div>
+    </nav>
+    <?php
+    } ?>
 
         <div class="container">
             <div class="row justify-content-center">
@@ -130,11 +149,15 @@ session_start();
 
                                     <tr>
                                         <td class="col bg-primary"><?php echo $row["code"]; ?></td>
-                                        <td class="col-10"><?php echo $row["nom"]; ?><td class='col-1'> </td>
-                                        <td>
-                                            <a class='btn btn-outline-dark btn-primary' href='departementModifier.php?id=<?php echo $row['id']?>' role='button'><i class='bi bi-pencil-square'></i></a>
-                                            <a class='btn btn-outline-dark btn-primary' href='departementSupprimer.php?id=<?php echo $row['id']?>' role='button'><i class='bi bi-trash'></i></a>
-                                        </td>
+                                        <td class="col-10"><?php echo $row["nom"]; ?></td>
+                                        <?php
+                                        if($_SESSION["admin"] == 1){ ?>
+                                            <td>
+                                                <a class='btn btn-outline-dark btn-primary' href='departementModifier.php?id=<?php echo $row['id']?>' role='button'><i class='bi bi-pencil-square'></i></a>
+                                                <a class='btn btn-outline-dark btn-primary' href='departementSupprimer.php?id=<?php echo $row['id']?>' role='button'><i class='bi bi-trash'></i></a>
+                                            </td>
+
+                                    <?php } ?>
                                     </tr>
                                     <?php
                                 }
@@ -147,6 +170,7 @@ session_start();
         </div>
 
     <?php
-        }?>
+    $conn->close();
+    ?>
 </body>
 </html>
