@@ -43,7 +43,9 @@ if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
     die("Connection failed: " . $conn->connect_error);
         
     }
+
     $conn->set_charset("utf8");
+
     if(isset($_GET['id'])){
         
         if(isset($_GET['choix'])){
@@ -69,6 +71,7 @@ if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
 
                     $sqlGet = "DELETE FROM evenement where id =$idEvenement ";
                     $result = $conn->query($sqlGet);
+
                     break;
                 case 4:
                     $idEvenement = $_GET['id'];
@@ -76,15 +79,11 @@ if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
                     $result = $conn->query($sqlGet);
                     break;
 
-               
+
             }
-           /* $idEvenement = $_GET['id'];
-            $sqlGet = "UPDATE evenement set etat = 'terminer' where id =$idEvenement ";
-            $result = $conn->query($sqlGet);*/
+           
         }
-        /*$idEvenement = $_GET['id'];
-        $sqlGet = "UPDATE evenement set etat = 'en cours' where id =$idEvenement ";
-        $result = $conn->query($sqlGet);*/
+      
     }
     
     $sql = "SELECT * FROM evenement WHERE etat = 'terminer'";
@@ -236,7 +235,9 @@ WHERE id_Evenement =' . $row2["id"] . ')';
             <td class="tdlist"><button class="btn btn-primary" onclick="window.location.href='evenementEnCoursEtu.php?id=<?php echo $row2['id'] ?>'">VOTE ÉTUDIANT</button>
             <button class="btn btn-primary" onclick="window.location.href='evenementEnCourPers.php?id=<?php echo $row2['id'] ?>'">VOTE PROFESSEUR</button>
             <button class="btn btn-primary" onclick="window.location.href='index.php?id=<?php echo $row2['id'] ?>&choix=1'">TERMINER</button>
+
             <button class="btn btn-primary" onclick="window.location.href='index.php?id=<?php echo $row2['id'] ?>&choix=4'">ANNULER</button>
+
         </td>
 
         </tr>
@@ -295,8 +296,10 @@ WHERE id_Evenement =' . $row3["id"] . ')';
             <td class="tdList" ><?php echo $row3["etat"] ?></td>
             <td class="tdlist"><a href="modifierEvent.php?id=<?php echo $row3["id"] ?>">🛠️</a>
             <a onclick="document.getElementById('id01').style.display='block'" href="supprimerEvent.php?id=<?php echo $row3["id"] ?>" >❌</a></td>
+
             <td class="tdlist"><button class="btn btn-primary" onclick="window.location.href='index.php?id=<?php echo $row3['id'] ?>&choix=2'">COMMENCER</button></td>
             
+
         </tr>
         
         <?php

@@ -23,6 +23,7 @@
         $lieuEvent = "";
     
         $lieuEventErr = "";
+
         $event = "";
     $erreur = false;
 
@@ -95,6 +96,7 @@
       
 
 
+
     }
     if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
        
@@ -119,6 +121,7 @@
         die("Connection failed: " . $conn->connect_error);
     
         }
+
         $conn->set_charset("utf8");
         $event = $_GET['id'];
         $sql = 'SELECT * FROM evenement WHERE id = ' . $event . '';
@@ -126,6 +129,7 @@
         $sql2 = "SELECT * FROM departement";
         $result2 = $conn->query($sql2);
         $conn->set_charset("utf8");
+
         
         if($result->num_rows > 0 ){
             while($row   = $result->fetch_assoc()){
@@ -140,6 +144,7 @@
         <div class="container-fluid">
 <div class="row col-12">
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = "post">
+
         
         <div class="row">
             <div class="col">
@@ -173,6 +178,7 @@
     <?php
     
 
+
     $sql3 = 'SELECT * FROM evenement_dept WHERE id_Evenement = ' . $event . ' ';
     $result3 = $conn->query($sql3);
     $list   = array();
@@ -181,6 +187,7 @@
             array_push($list, $row['id_Departement']);
         }
     }
+
 
 
     
@@ -197,6 +204,7 @@
                 }
             }
             if($present == true){
+
                 ?>
                 <input type="checkbox" name="<?php echo $row["id"]?>" id="<?php echo $row["id"]?>" value="<?php echo $row['id'] ?>" checked></input><label for="<?php echo $row['id'] ?>"> <?php echo $row['code'] . " " . $row['nom'] ?></label><br>
                 <?php
@@ -207,16 +215,20 @@
                 <?php
             }
         }
+
     }
             ?>
     </div>
     </div>
+
     <input type="submit" value="Submit">
     </form>
     </div>
     </div>
 <?php
     }
+
+
 
     ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>

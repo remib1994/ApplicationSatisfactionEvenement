@@ -26,6 +26,7 @@ session_start();
     $erreur = false;
     if($_SERVER['REQUEST_METHOD'] == "POST"){
         echo "<h1> POST == true </h1>";
+
       if(empty($_POST["nomEvent"])){
           
           $nomEventErr = "Le nom ne peut pas être vide";
@@ -33,7 +34,7 @@ session_start();
       }
       else{
             $nomEvent = $_POST['nomEvent'];
-            
+
       }
        if(empty($_POST["descEvent"])){
           $descEventErr = "La description ne peux etre vide";
@@ -46,9 +47,12 @@ session_start();
             $dateEventErr = "veilliez entrer une date";
                     $erreur  = true;
         }
+        
+  
         else{
             $dateEvent =$_POST['dateEvent'];
             
+
         }
         if(empty($_POST["lieuEvent"])){
             $lieuEventErr = "veilliez entrer un lieu";
@@ -60,7 +64,6 @@ session_start();
         }
         
 
-        
         $servername = "localhost";
         $username = "root";
         $password = "root";
@@ -221,6 +224,7 @@ if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
     <div class="col">
     <label for="lieuEvent">Lieu de l'événement</label>
     <input name="lieuEvent" id="lieuEvent" type="text">
+
     <span class="error"><?php echo $lieuEventErr;?></span>
 </div>
 </div>
@@ -228,6 +232,7 @@ if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
         <div class="col">
         <label for="departement">Departement</label>
         <br>
+
     <?php
 if($result->num_rows > 0 ){
     while($row = $result->fetch_assoc()){

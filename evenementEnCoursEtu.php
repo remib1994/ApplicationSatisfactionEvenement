@@ -14,7 +14,9 @@ session_start();
 <body class="bodyEtu">
     
     <div class="container">
+
         <h1 class="titrePage">VOTE ÉTUDIANT  </h1>
+
     </div>
     <?php
     $erreur = false;
@@ -39,6 +41,7 @@ if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
     
     $sql = "SELECT * FROM evenement WHERE id = id2";
     $result = $conn->query($sql);
+
     $conn->set_charset("utf8");
     if(isset($_GET['id'])){
         if(isset($_GET['ajout'])){

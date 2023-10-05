@@ -26,13 +26,16 @@
  $idEvenement = $_GET['id'];
  $sql = "SELECT * FROM evenement where id = $idEvenement";
     $result = $conn->query($sql);
+
     $conn->set_charset("utf8");
-    
+
     ?>
 
     <div class="container">
-      <h1 class="titrePage" >Delete Account</h1>
-      <p>Are you sure you want to delete your account?</p>
+
+      <h1 class="titrePage" >Suppression évenement</h1>
+
+      <p>etes vous certains de vouloire supprimer cette événement?</p>
       
       <div class="clearfix">
         <button type="button"  class="cancelbtn" href="index.php" >Cancel</button>
