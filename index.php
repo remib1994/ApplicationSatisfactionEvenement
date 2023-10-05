@@ -6,46 +6,63 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css" /> 
-   
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-  
-    <title>Document</title>
-</head>
-<body>
-    <h1>LISTE DES EVENEMENTS</h1>
-    
-    <?php
-$nomEvent = "";
-$nomEventErr = "";
-$descEvent = "";
-$descEventErr = "";
-$dateEvent = "";
-$dateEventErr = "";
-$lieuEvent = "";
-$lieuEventErr = "";
-$erreur = false;
-$_SESSION["connexion"] = true;
-
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="style.css" />
-
     <title>Gestionnaire évènement</title>
+</head>
+<body>
+    <?php
+
+    //Variable de connexion BD
+    $servername = "cours.cegep3r.info";
+    $DBusername = "1238823";
+    $DBpassword = "1238823";
+    $db = "1238823-remi-berneche";
+
+    //create connection
+    $conn = new mysqli($servername,$DBusername,$DBpassword,$db);
+    $conn->set_charset("utf8");
+    // Check connection
+    if ($conn->connect_error){
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $conn->set_charset("utf8");
+
+    $nomEvent = "";
+    $nomEventErr = "";
+    $descEvent = "";
+    $descEventErr = "";
+    $dateEvent = "";
+    $dateEventErr = "";
+    $lieuEvent = "";
+    $lieuEventErr = "";
+    $erreur = false;
+
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST['email'];
         $password = $_POST['password'];
         $password = sha1($password,false);
         $email = trojan($email);
         $password = trojan($password);
+        $sql = "SELECT * FROM user where email='$email' and password='$password'";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $_SESSION["connexion"] = true;
+            $_SESSION["email"] = $row["email"];
+            $_SESSION["username"] = $row["username"];
+            $_SESSION["id"] = $row["id"];
+            $_SESSION["admin"] = $row["admin"];
+        }
     }
 
-    $conn->set_charset("utf8");
-
     if(isset($_GET['id'])){
-        
+
         if(isset($_GET['choix'])){
             switch($_GET['choix']){
                 case 1:
@@ -60,12 +77,12 @@ $_SESSION["connexion"] = true;
                     break;
                 case 3:
                     $idEvenement = $_GET['id'];
-                    
-                    
-                            $sqlGet5 = "DELETE FROM evenement_dept where id_Evenement =$idEvenement ";
-                            $result5 = $conn->query($sqlGet5);
-                        
-                    
+
+
+                    $sqlGet5 = "DELETE FROM evenement_dept where id_Evenement =$idEvenement ";
+                    $result5 = $conn->query($sqlGet5);
+
+
 
                     $sqlGet = "DELETE FROM evenement where id =$idEvenement ";
                     $result = $conn->query($sqlGet);
@@ -79,21 +96,12 @@ $_SESSION["connexion"] = true;
 
 
             }
-           
+
         }
-      
+
     }
-    
-    $sql = "SELECT * FROM evenement WHERE etat = 'terminer'";
-    $result = $conn->query($sql);
-    $sql2 = "SELECT * FROM evenement WHERE etat = 'en cours'";
-    $result2 = $conn->query($sql2);
-    $sql3 = "SELECT * FROM evenement WHERE etat = 'a venir'";
-    $result3 = $conn->query($sql3);
-    $conn->set_charset("utf8");
 
 
-}
     if(!isset($_SESSION["connexion"]) or $_SESSION["connexion"] != true){ ?>
         <nav class="navbar navbar-dark navbar-expand-lg bg-primary">
             <div class="container-fluid">
@@ -104,8 +112,6 @@ $_SESSION["connexion"] = true;
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarScroll">
-
-?>
 <!-- affichage des ellement -->
                     <a class="btn btn-outline-warning btn-primary" href="index.php" role="button">Se connecter <i class="bi bi-box-arrow-left"></i></a>
                 </div>
@@ -196,11 +202,15 @@ $_SESSION["connexion"] = true;
             </div>
         </nav>
     <?php
-    } ?>
+    }
 
-<!-- INSÉRER LE CODE de Tristan -->
-
-
+    $sql = "SELECT * FROM evenement WHERE etat = 'terminer'";
+    $result = $conn->query($sql);
+    $sql2 = "SELECT * FROM evenement WHERE etat = 'en cours'";
+    $result2 = $conn->query($sql2);
+    $sql3 = "SELECT * FROM evenement WHERE etat = 'a venir'";
+    $result3 = $conn->query($sql3);
+    ?>
 <!-- affichage des ellement -->
 <div class="container-fluid">
 <div class="row col-12">
@@ -408,19 +418,19 @@ WHERE id_Evenement =' . $row3["id"] . ')';
 </div>
 </div>
 <?php
-//function to remove special characters and spaces
+}
+
+$conn->close();
 function trojan($data) {
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data,ENT_QUOTES);
     return $data; ?>
-<script>
 
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="script.js"></script>
-
-$conn->close();
+    <?php
+}
 ?>
+
+    <script src="script.js"></script>
 </body>
 </html>
