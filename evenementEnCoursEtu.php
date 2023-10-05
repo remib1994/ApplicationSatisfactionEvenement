@@ -12,12 +12,9 @@ session_start();
     <title>Document</title>
 </head>
 <body class="bodyEtu">
-    <?php
-$_SESSION['id2'] = $_GET['id'];
-$id2 = $_SESSION['id2'];
-?>
+    
     <div class="container">
-        <h1 class="titreEvenCour">VOTE ÉTUDIANT <?php echo $id2 ?> </h1>
+        <h1 class="titrePage">VOTE ÉTUDIANT  </h1>
     </div>
     <?php
     $erreur = false;
@@ -42,17 +39,37 @@ if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
     
     $sql = "SELECT * FROM evenement WHERE id = id2";
     $result = $conn->query($sql);
-
+    $conn->set_charset("utf8");
+    if(isset($_GET['id'])){
+        if(isset($_GET['ajout'])){
+            switch($_GET['ajout']){
+                case 1:
+                    $idEvenement = $_GET['id'];
+                    $sqlGet = "UPDATE evenement set Good = (1+ Good) where id =$idEvenement ";
+                    $result = $conn->query($sqlGet);
+                    break;
+                case 2:
+                    $idEvenement = $_GET['id'];
+                    $sqlGet = "UPDATE evenement set Ok = (1+ Ok) where id =$idEvenement ";
+                    $result = $conn->query($sqlGet);
+                    break;
+                case 3:
+                    $idEvenement = $_GET['id'];
+                    $sqlGet = "UPDATE evenement set Bad = (1+ Bad) where id =$idEvenement ";
+                    $result = $conn->query($sqlGet);
+                    break;
+            }
+        }
+    }
 
 
     ?>
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method = "post">
     <div class="container vote">
-        <img src="images/green.jpg"  class="imgVoteE voteE1" >
-       <img src="images/yellow.jpg"  class="imgVoteE voteE2" >
-         <img src="images/red.jpg"  class="imgVoteE voteE3"  > 
+       <a href="evenementEnCoursEtu.php?id=<?php echo $_GET['id'] ?>&ajout=1"> <img src="images/green.jpg"  class="imgVoteE " ></a>
+       <a href="evenementEnCoursEtu.php?id=<?php echo $_GET['id'] ?>&ajout=2"> <img src="images/yellow.jpg"  class="imgVoteE " ></a>
+         <a href="evenementEnCoursEtu.php?id=<?php echo $_GET['id'] ?>&ajout=3"> <img src="images/red.jpg"  class="imgVoteE " ></a>  
     </div>
-    </form>
+    
     <?php
 }
 ?>

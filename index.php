@@ -13,7 +13,7 @@ session_start();
     <title>Document</title>
 </head>
 <body>
-    <h1>LISTE DES EVENEMENTS</h1>
+    <h1 class="titrePage bg-primary">LISTE DES EVENEMENTS</h1>
     
     <?php
 $nomEvent = "";
@@ -24,16 +24,17 @@ $dateEvent = "";
 $dateEventErr = "";
 $lieuEvent = "";
 $lieuEventErr = "";
+$idEvenement = "";
 $erreur = false;
 $_SESSION["connexion"] = true;
 
 
 
 if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
-    $servername = "cours.cegep3r.info";
-    $username = "1238823";
-    $password = "1238823";
-    $db = "1238823-remi-berneche";
+    $servername = "localhost";
+    $username = "root";
+    $password = "root";
+    $db = "appsatisfaction";
 
     // Create connection  
     $conn = new mysqli($servername, $username, $password, $db);
@@ -42,16 +43,62 @@ if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
     die("Connection failed: " . $conn->connect_error);
         
     }
+    $conn->set_charset("utf8");
+    if(isset($_GET['id'])){
+        
+        if(isset($_GET['choix'])){
+            switch($_GET['choix']){
+                case 1:
+                    $idEvenement = $_GET['id'];
+                    $sqlGet = "UPDATE evenement set etat = 'terminer' where id =$idEvenement ";
+                    $result = $conn->query($sqlGet);
+                    break;
+                case 2:
+                    $idEvenement = $_GET['id'];
+                    $sqlGet = "UPDATE evenement set etat = 'en cours' where id =$idEvenement ";
+                    $result = $conn->query($sqlGet);
+                    break;
+                case 3:
+                    $idEvenement = $_GET['id'];
+                    
+                    
+                            $sqlGet5 = "DELETE FROM evenement_dept where id_Evenement =$idEvenement ";
+                            $result5 = $conn->query($sqlGet5);
+                        
+                    
+
+                    $sqlGet = "DELETE FROM evenement where id =$idEvenement ";
+                    $result = $conn->query($sqlGet);
+                    break;
+                case 4:
+                    $idEvenement = $_GET['id'];
+                    $sqlGet = "UPDATE evenement set etat = 'a venir' where id =$idEvenement ";
+                    $result = $conn->query($sqlGet);
+                    break;
+
+               
+            }
+           /* $idEvenement = $_GET['id'];
+            $sqlGet = "UPDATE evenement set etat = 'terminer' where id =$idEvenement ";
+            $result = $conn->query($sqlGet);*/
+        }
+        /*$idEvenement = $_GET['id'];
+        $sqlGet = "UPDATE evenement set etat = 'en cours' where id =$idEvenement ";
+        $result = $conn->query($sqlGet);*/
+    }
+    
     $sql = "SELECT * FROM evenement WHERE etat = 'terminer'";
     $result = $conn->query($sql);
     $sql2 = "SELECT * FROM evenement WHERE etat = 'en cours'";
     $result2 = $conn->query($sql2);
     $sql3 = "SELECT * FROM evenement WHERE etat = 'a venir'";
     $result3 = $conn->query($sql3);
-
+    $conn->set_charset("utf8");
 
 
 }
+
+
 
 ?>
 <!-- affichage des ellement -->
@@ -60,17 +107,19 @@ if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
 <div class="container-fluid">
 <div class="row col-12">
 
-<button class="accordion">terminer</button>
+<button class="accordion bg-primary ">terminer</button>
 <div class="panel">
-<table class="table table-striped" >
+<table class="table table-striped table-info"  >
   <tr>
-    <th class="tdCat">id</th>
-    <th class="tdCat">nom</th>
-    <th class="tdCat">description</th>
-    <th class="tdCat">date</th>
+    <th class="tdCat  ">id</th>
+    <th class="tdCat  ">nom</th>
+    <th class="tdCat  ">description</th>
+    <th class="tdCat ">date</th>
     <th class="tdCat">lieu</th>
     <th class="tdCat">departement</th>
     <th class="tdCat">etat</th>
+    <th class="tdCat">resultat étudiant</th>
+    <th class="tdCat">resultat professeur</th>
 
   </tr>
   <?php
@@ -104,9 +153,17 @@ WHERE id_Evenement =' . $row["id"] . ')';
     
     
             <td class="tdList" ><?php echo $row["etat"] ?></td>
-            <td class="tdlist"><a href="modifier.php?id=<?php echo $row["id"] ?>">🛠️</a></td>
-            <td class="tdlist"><a href="supprimer.php?id=<?php echo $row["id"] ?>">❌</a></td>
-        </tr>
+            <td class="tdlist">
+                <label> 😀  : <?php echo $row["Good"] ?> </label> 
+                <label> 😑  : <?php echo $row["Ok"] ?> </label>
+                <label> ☹️  : <?php echo $row["Bad"] ?> </label>
+            </td>
+            <td class="tdlist">
+                <label> 😀  : <?php echo $row["GoodAdmin"] ?>  </label>
+                <label> 😑  : <?php echo $row["OkAdmin"] ?> </label>
+                <label> ☹️  : <?php echo $row["BadAdmin"] ?> </label>
+            </td>
+          </tr>
         
         <?php
     }
@@ -115,9 +172,9 @@ WHERE id_Evenement =' . $row["id"] . ')';
 </table>
 </div>
 
-<button class="accordion">En cours</button>
+<button class="accordion bg-primary">En cours</button>
 <div class="panel">
-<table class="table table-striped" >
+<table class="table table-striped table-info" >
   <tr>
     <th class="tdCat">id</th>
     <th class="tdCat">nom</th>
@@ -126,6 +183,10 @@ WHERE id_Evenement =' . $row["id"] . ')';
     <th class="tdCat">lieu</th>
     <th class="tdCat">departement</th>
     <th class="tdCat">etat</th>
+    <th class="tdCat">resultat étudiant</th>
+    <th class="tdCat">resultat professeur</th>
+    <th class="tdCat">otpion</th>
+    <th class="tdCat">action</th>
 
   </tr>
   <?php
@@ -138,6 +199,7 @@ if($result2->num_rows > 0 ){
             <td class="tdList"><?php echo $row2["description"]?></td>
             <td class="tdList"><?php echo $row2["date"] ?></td>
             <td class="tdList"><?php echo $row2["lieu"] ?></td>
+            
             <td class="tdList">
            <?php $sql22 = 'SELECT nom,code
 FROM departement
@@ -146,6 +208,7 @@ SELECT id_departement
 FROM evenement_dept
 WHERE id_Evenement =' . $row2["id"] . ')';
     $result22 = $conn->query($sql22);
+    $conn->set_charset("utf8");
     if($result22->num_rows > 0 ){
         while($row22 = $result22->fetch_assoc()){
             ?>
@@ -157,10 +220,25 @@ WHERE id_Evenement =' . $row2["id"] . ')';
      
      
     
-    
+            <td class="tdlist">
+                <label> 😀  : <?php echo $row2["Good"] ?> </label> 
+                <label> 😑  : <?php echo $row2["Ok"] ?> </label>
+                <label> ☹️  : <?php echo $row2["Bad"] ?> </label>
+            </td>
+            <td class="tdlist">
+                <label> 😀  : <?php echo $row2["GoodAdmin"] ?>  </label>
+                <label> 😑  : <?php echo $row2["OkAdmin"] ?> </label>
+                <label> ☹️  : <?php echo $row2["BadAdmin"] ?> </label>
+            </td>
             <td class="tdList" ><?php echo $row2["etat"] ?></td>
-            <td class="tdlist"><a href="modifier.php?id=<?php echo $row2["id"] ?>">🛠️</a></td>
-            <td class="tdlist"><a href="supprimer.php?id=<?php echo $row2["id"] ?>">❌</a></td>
+            <td class="tdlist"><a href="modifierEvent.php?id=<?php echo $row2["id"] ?>">🛠️</a>
+             </td>
+            <td class="tdlist"><button class="btn btn-primary" onclick="window.location.href='evenementEnCoursEtu.php?id=<?php echo $row2['id'] ?>'">VOTE ÉTUDIANT</button>
+            <button class="btn btn-primary" onclick="window.location.href='evenementEnCourPers.php?id=<?php echo $row2['id'] ?>'">VOTE PROFESSEUR</button>
+            <button class="btn btn-primary" onclick="window.location.href='index.php?id=<?php echo $row2['id'] ?>&choix=1'">TERMINER</button>
+            <button class="btn btn-primary" onclick="window.location.href='index.php?id=<?php echo $row2['id'] ?>&choix=4'">ANNULER</button>
+        </td>
+
         </tr>
         
         <?php
@@ -171,9 +249,9 @@ WHERE id_Evenement =' . $row2["id"] . ')';
 </div>
 
 
-<button class="accordion">A venir</button>
+<button class="accordion bg-primary">A venir</button>
 <div class="panel">
-<table class="table table-striped" >
+<table class="table table-striped table-info" >
   <tr>
     <th class="tdCat">id</th>
     <th class="tdCat">nom</th>
@@ -215,9 +293,10 @@ WHERE id_Evenement =' . $row3["id"] . ')';
     
     
             <td class="tdList" ><?php echo $row3["etat"] ?></td>
-            <td class="tdlist"><a href="modifier.php?id=<?php echo $row3["id"] ?>">🛠️</a></td>
-            <td class="tdlist"><a href="supprimer.php?id=<?php echo $row3["id"] ?>">❌</a></td>
-            <td class="tdlist"><a href="evenementEnCoursEtu.php?id=<?php echo $row["id"]?>" >commencer</a></td>
+            <td class="tdlist"><a href="modifierEvent.php?id=<?php echo $row3["id"] ?>">🛠️</a>
+            <a onclick="document.getElementById('id01').style.display='block'" href="supprimerEvent.php?id=<?php echo $row3["id"] ?>" >❌</a></td>
+            <td class="tdlist"><button class="btn btn-primary" onclick="window.location.href='index.php?id=<?php echo $row3['id'] ?>&choix=2'">COMMENCER</button></td>
+            
         </tr>
         
         <?php
@@ -233,7 +312,7 @@ WHERE id_Evenement =' . $row3["id"] . ')';
    
 
 
-<a class="creeEvents" href="creerEvenement.php">Créer un événement</a>
+
 </div>
 
 <script>
