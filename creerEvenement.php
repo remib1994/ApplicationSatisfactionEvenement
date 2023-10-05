@@ -5,6 +5,8 @@ session_start();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css" /> 
    
@@ -137,9 +139,9 @@ if($result->num_rows > 0 ){
         
     
     <?php
-   }
+        $conn->close();}
 
-?>
+    ?>
 
 </body>
 </html>

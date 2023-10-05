@@ -1,46 +1,17 @@
-<?php
-session_start();
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css" /> 
-   
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-  
-    <title>Document</title>
-</head>
-<body>
-    <h1>LISTE DES EVENEMENTS</h1>
-    
-    <?php
-$nomEvent = "";
-$nomEventErr = "";
-$descEvent = "";
-$descEventErr = "";
-$dateEvent = "";
-$dateEventErr = "";
-$lieuEvent = "";
-$lieuEventErr = "";
-$erreur = false;
-$_SESSION["connexion"] = true;
 
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
 
-
-if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
-    $servername = "cours.cegep3r.info";
-    $username = "1238823";
-    $password = "1238823";
-    $db = "1238823-remi-berneche";
-
-    // Create connection  
-    $conn = new mysqli($servername, $username, $password, $db);
-    // Check connection
-    if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-        
+    <title>Gestionnaire évènement</title>
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $password = sha1($password,false);
+        $email = trojan($email);
+        $password = trojan($password);
     }
     $sql = "SELECT * FROM evenement WHERE etat = 'terminer'";
     $result = $conn->query($sql);
@@ -52,9 +23,113 @@ if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
 
 
 }
-
 ?>
+    <?php
+    if(!isset($_SESSION["connexion"]) or $_SESSION["connexion"] != true){ ?>
+        <nav class="navbar navbar-dark navbar-expand-lg bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand mx-2" href="index.php">
+                    <i class="bi bi-speedometer"></i>SatisfactoPoll
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarScroll">
+
 <!-- affichage des ellement -->
+                    <a class="btn btn-outline-warning btn-primary" href="index.php" role="button">Se connecter <i class="bi bi-box-arrow-left"></i></a>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-sm-3">
+                    <h1>Connexion</h1>
+                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Adresse email</label>
+                            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
+                            <div id="emailHelp" class="form-text">Nous ne partagerons jamais votre email avec qui que ce soit.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Se connecter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?php
+    }else{ ?>
+
+        <nav class="navbar navbar-dark navbar-expand-lg bg-primary">
+            <div class="container-fluid">
+                <a class="navbar-brand mx-2" href="index.php">
+                    <i class="bi bi-speedometer"></i>SatisfactoPoll
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarScroll">
+                    <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Évènement
+                            </a>
+                            <ul class="dropdown-menu">
+                                <?php
+                                if($_SESSION["admin"] == 1){
+                                    echo "<li><a class='dropdown-item' href='creerEvenement.php'>Créer</a></li>";
+                                    echo "<li><hr class='dropdown-divider'></li>";
+                                }
+                                ?>
+                                <li><a class="dropdown-item" href="index.php">Afficher</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Département
+                            </a>
+                            <ul class="dropdown-menu">
+                                <?php
+                                if($_SESSION["admin"] == 1){
+                                    echo "<li><a class='dropdown-item' href='departementCreer.php'>Créer</a></li>";
+                                    echo "<li><hr class='dropdown-divider'></li>";
+                                }
+                                ?>
+                                <li><a class="dropdown-item" href="departementAfficher.php">Afficher</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Utilisateur
+                            </a>
+                            <ul class="dropdown-menu">
+                                <?php
+                                if($_SESSION["admin"] == 1){
+                                    echo "<li><a class='dropdown-item' href='userCreer.php'>Créer</a></li>";
+                                    echo "<li><hr class='dropdown-divider'></li>";
+                                }
+                                ?>
+                                <li><a class="dropdown-item" href="userAfficher.php">Afficher</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                        <span class="mx-2 navbar-text">
+                            Bienvenue <a class='text-warning' href='userModifier.php?id=<?php echo $_SESSION['id']; ?>'><?php echo $_SESSION["username"]; ?>
+                            </a>
+                        </span>
+                        <a href="deconnecter.php" class="mx-2 link-warning">Se déconnecter <i class="bi bi-box-arrow-right"></i></a>
+                </div>
+
+            </div>
+        </nav>
+    <?php
+    } ?>
+
+<!-- INSÉRER LE CODE de Tristan -->
+
 
 <!-- affichage des ellement -->
 <div class="container-fluid">
@@ -71,7 +146,6 @@ if($_SERVER['REQUEST_METHOD'] != "POST" || $erreur == true){
     <th class="tdCat">lieu</th>
     <th class="tdCat">departement</th>
     <th class="tdCat">etat</th>
-
   </tr>
   <?php
 if($result->num_rows > 0 ){
@@ -110,7 +184,6 @@ WHERE id_Evenement =' . $row["id"] . ')';
         
         <?php
     }
-}
 ?>
 </table>
 </div>
@@ -170,7 +243,6 @@ WHERE id_Evenement =' . $row2["id"] . ')';
 </table>
 </div>
 
-
 <button class="accordion">A venir</button>
 <div class="panel">
 <table class="table table-striped" >
@@ -226,20 +298,21 @@ WHERE id_Evenement =' . $row3["id"] . ')';
 ?>
 </table>
 </div>
-
-
- 
-    
-   
-
-
-<a class="creeEvents" href="creerEvenement.php">Créer un événement</a>
 </div>
-
+<?php
+//function to remove special characters and spaces
+function trojan($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data,ENT_QUOTES);
+    return $data; ?>
 <script>
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
+
+$conn->close();
+?>
 </body>
 </html>
